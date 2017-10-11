@@ -48,15 +48,27 @@ exports.abord = function() {
 
 
 exports.speakWord = function(lang, cb) {
-    console.log(lang)
-    var $speaker = $(".phonetic-lang.us .speaker")
+    var $speaker = $(".phonetic-lang." + lang + " .speaker")
     var localUri = $speaker.data("localUri")
     if (!localUri) {
         console.log("video file not loaded yet")
         return
     }
-    console.log(localUri)
-    exports.speakUri(localUri)
+    exports.speakUri(localUri, cb)
+}
+
+exports.speakWordSeveralTimes = function(lang, times, cb) {
+    if (times < 1) {
+        cb && cb()
+        return
+    }
+    this.speakWord(lang, (error, abort) => {
+        if (abort) {
+            cb && cb()
+            return
+        }
+        this.speakWordSeveralTimes(lang, times - 1, cb)
+    })
 }
 
 exports.speakUri = function(uri, cb) {
@@ -68,11 +80,12 @@ exports.speakUri = function(uri, cb) {
     $speaker[0].play()
 }
 
+console.log($speaker[0])
 $speaker[0].onended = function() {
     if (speakCallback) {
-        ((speakCallback) => {
-            speakCallback(null, false)
-        })(speakCallback)
-        speakCallback = null
+        ((speakCallback) =>
+            setTimeout(() => speakCallback(null, false), 0)
+        )(speakCallback)
+        speakCallback = null;
     }
 }

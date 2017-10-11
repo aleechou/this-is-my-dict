@@ -31,3 +31,7 @@ body {
 .hide-boot {
     display: none;
 }
+
+.word-from-clipboard {
+    background-color: #e8f797
+}

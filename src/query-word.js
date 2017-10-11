@@ -2,8 +2,11 @@ const fs = require("fs")
 const pt = require("path")
 const request = require('request')
 const $ = require("./lib/jquery")
+const history = require("./history")
 const crypto = require('crypto')
+const mkdirs = require("./misc/utils").mkdirs
 
+var $input = $(".word-input")
 
 const oldYoudaoApi = "http://fanyi.youdao.com/openapi.do?keyfrom=neverland&key=969918857&type=data&doctype=json&version=1.2&q="
 const youdaoApi = "http://openapi.youdao.com/api"
@@ -18,10 +21,13 @@ exports.queryWordFromInput = function queryWordFromInput() {
     $input.data("query-word", word)
 
     var url = oldYoudaoApi + encodeURI(word)
+    console.log(url)
 
     $(".query-loading").show()
     $(".message").hide()
     $(".word-detail").hide()
+
+    $(".phonetic-lang .speaker").data("localUri", null)
 
     request(url, function(error, response, body) {
 
@@ -45,8 +51,18 @@ exports.queryWordFromInput = function queryWordFromInput() {
                 return
             }
         } catch (e) {
+            console.error(e)
+            console.log(body)
             $(".message").text("网络内容格式不正确").show()
             return
+        }
+
+        // 只记录英文单词
+        if (word.match(/^[a-zA-z\s\-\.]+$/)) {
+            var queryTimes = history.recordAndSave(word)
+            $(".query-times").text(`[${queryTimes}]`).show()
+        } else {
+            $(".query-times").hide()
         }
 
         exports.showExplains(word, body)
@@ -102,7 +118,7 @@ exports.downloadVideo = function downloadVideo(url, word, type, cb) {
     var videoFolder = videoFolderRoot + "/" + word[0]
 
     if (!fs.existsSync(videoFolder)) {
-        fs.mkdirSync(videoFolder)
+        mkdirs(videoFolder)
     }
     if (!fs.existsSync(videoFolder)) {
         cb && cb("missing video folder:" + videoFolder)

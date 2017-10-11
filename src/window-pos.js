@@ -41,3 +41,7 @@ exports.moveToScreenCorner = function moveToScreenCorner(cb) {
         self.setPosition(display.workArea.x + x, display.workArea.y + y, cb)
     })
 }
+
+exports.moveToCurrentScreen = function() {
+    console.log(screen.getAllDisplays())
+}

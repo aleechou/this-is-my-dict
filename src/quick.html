@@ -11,8 +11,8 @@
 <body class="flex-column" style="background-color:rgba(139, 69, 19, 0);">
 
     <div class="no-drag flex-row">
-        <input class="word-input" style="flex-grow:1" value="hello" />
-        <button onclick="require('./window-pos').moveToScreenCorner(()=>self.hide())">x</button>
+        <input class="word-input no-drag" style="flex-grow:1" value="hello" onclick="console.log(123);this.focus()" />
+        <button onclick="self.hide(); require('./window-pos').moveToScreenCorner()">x</button>
     </div>
 
     <div class="message hide-boot" style="flex-grow:1">
@@ -23,13 +23,14 @@
     <div class="word-detail hide-boot">
         <div class="basic flex-column flex-expand">
             <di class="flex-row">
+                <span class="query-times hide-boot">[.]</span>
                 <h3 class="word no-drag flex-expand"> .. </h3>
                 <div class="phonetic-lang uk">
-                    美 [ <span class="phonetic no-drag">-</span> ]
+                    英 [ <span class="phonetic no-drag">-</span> ]
                     <img class="speaker no-drag" src="assert/speaker.png">
                 </div>
                 <div class="phonetic-lang us">
-                    英 [ <span class="phonetic no-drag">-</span> ]
+                    美 [ <span class="phonetic no-drag">-</span> ]
                     <img class="speaker no-drag" src="assert/speaker.png">
                 </div>
             </di>
@@ -38,11 +39,8 @@
 
         </ul>
     </div>
-    <div>
-        3
-    </div>
 
-    <video class=" word-speaker "></video>
+    <video class=" word-speaker " height=0px></video>
 
     <script src="lib/jquery.js "></script>
     <script src="lib/amazeui/js/amazeui.js "></script>
