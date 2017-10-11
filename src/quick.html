@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="quick.css" />
+    <link rel="stylesheet" href="lib/amazeui/css/amazeui.min.css" />
+</head>
+
+<body class="flex-column" style="background-color:rgba(139, 69, 19, 0);">
+
+    <div class="no-drag flex-row">
+        <input class="word-input" style="flex-grow:1" value="hello" />
+        <button onclick="require('./window-pos').moveToScreenCorner(()=>self.hide())">x</button>
+    </div>
+
+    <div class="message hide-boot" style="flex-grow:1">
+    </div>
+    <div class="query-loading hide-boot" style="flex-grow:1">
+        <img src="assert/query-loading.gif">
+    </div>
+    <div class="word-detail hide-boot">
+        <div class="basic flex-column flex-expand">
+            <di class="flex-row">
+                <h3 class="word no-drag flex-expand"> .. </h3>
+                <div class="phonetic-lang uk">
+                    美 [ <span class="phonetic no-drag">-</span> ]
+                    <img class="speaker no-drag" src="assert/speaker.png">
+                </div>
+                <div class="phonetic-lang us">
+                    英 [ <span class="phonetic no-drag">-</span> ]
+                    <img class="speaker no-drag" src="assert/speaker.png">
+                </div>
+            </di>
+        </div>
+        <ul class="expains">
+
+        </ul>
+    </div>
+    <div>
+        3
+    </div>
+
+    <video class=" word-speaker "></video>
+
+    <script src="lib/jquery.js "></script>
+    <script src="lib/amazeui/js/amazeui.js "></script>
+    <script src="lib/attr2css.js "></script>
+    <script src="quick.js "></script>
+
+</body>
+
+</html>
