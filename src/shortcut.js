@@ -2,7 +2,6 @@ const windowPos = require("./window-pos")
 const objProxy = require("./misc/ObjectIpcProxy")
 const $ = require("./lib/jquery")
 const queryWord = require("./query-word")
-const quickWindow = require("./quick")
 const speaker = require("./speaker")
 
 var $input = $(".word-input")

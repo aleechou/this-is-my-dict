@@ -5,6 +5,7 @@ require("./window-pos")
 require("./shortcut")
 require("./query-word")
 const speaker = require("./speaker")
+const history = require("./history")
 
 
 
