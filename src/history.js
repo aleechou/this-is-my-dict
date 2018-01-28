@@ -1,21 +1,22 @@
-const request = require("request")
-const saveFolder = __dirname + '/../data/'
-const saveFile = saveFolder + 'query-history.json'
+// const request = require("request")
+// const saveFolder = __dirname + '/../data/'
+// const saveFile = saveFolder + 'query-history.json'
 
-const mkdirs = require("./misc/utils").mkdirs
-const fs = require("fs")
+// const mkdirs = require("./misc/utils").mkdirs
+// const fs = require("fs")
 
-try {
-    mkdirs(saveFolder)
-    exports.queryHistory = require(saveFile)
 
-    exports.syncToServer()
+// try {
+//     mkdirs(saveFolder)
+//     exports.queryHistory = require(saveFile)
 
-} catch (e) {
-    exports.queryHistory = {}
-}
+//     exports.syncToServer()
 
-exports.recordAndSave = function(word) {
+// } catch (e) {
+//     exports.queryHistory = {}
+// }
+
+exports.recordAndSave = function(word) {return
     word = word.toLowerCase()
 
     if (!exports.queryHistory[word]) {
@@ -35,10 +36,9 @@ exports.recordAndSave = function(word) {
     return exports.queryHistory[word].total
 }
 
-exports.save = function() {
+exports.save = function() {return
     fs.writeFile(saveFile, JSON.stringify(exports.queryHistory), console.log)
 }
-
 
 exports.syncToServer = function(){
     request({

@@ -1,10 +1,11 @@
-const fs = require("fs")
-const pt = require("path")
-const request = require('request')
-const $ = require("./lib/jquery")
-const history = require("./history")
-const crypto = require('crypto')
-const mkdirs = require("./misc/utils").mkdirs
+
+
+// const fs = require("fs")
+// const pt = require("path")
+// const request = require('request')
+// const crypto = require('crypto')
+// const mkdirs = require("./misc/utils").mkdirs
+const history = require("./history.js")
 
 var $input = $(".word-input")
 
@@ -13,7 +14,7 @@ const youdaoApi = "http://openapi.youdao.com/api"
 const appKey = "3ad8620cf27c920a"
 const appPrivateKey = "6s85VjC26rLnANR3q1C5sJkU1iuTKvJj"
 
-const videoFolderRoot = __dirname + '/../data/videos'
+// const videoFolderRoot = __dirname + '/../data/videos'
 
 exports.queryWordFromInput = function queryWordFromInput() {
 
@@ -29,68 +30,77 @@ exports.queryWordFromInput = function queryWordFromInput() {
 
     $(".phonetic-lang .speaker").data("localUri", null)
 
-    request(url, function(error, response, body) {
+    $.ajax({ 
+        url: url,
 
-        $(".query-loading").hide()
-
-        if (error) {
-            console.error(error)
+        error: function (){
             $(".message").text("网络错误").show()
-            return
-        }
-        try {
-            body = JSON.parse(body)
-            console.log('body:', body)
+        } ,
+        success: function(body){
 
-            if (body.errorCode) {
-                $(".message").text("查询错误，errorCode:" + body.errorCode).show()
-                return
-            }
-            if (!body.basic) {
-                $(".message").text("没有这个词的解释").show()
-                return
-            }
-        } catch (e) {
-            console.error(e)
             console.log(body)
-            $(".message").text("网络内容格式不正确").show()
-            return
-        }
 
-        // 只记录英文单词
-        if (word.match(/^[a-zA-z\s\-\.]+$/)) {
-            var queryTimes = history.recordAndSave(word)
-            $(".query-times").text(`[${queryTimes}]`).show()
-        } else {
-            $(".query-times").hide()
-        }
+            $(".query-loading").hide()
 
-        exports.showExplains(word, body)
-
-        function downloadVideo(type, field) {
-            $(`.${type} .speaker`)
-                .attr("src", "assert/downloading.gif")
-                .data('localUri', null)
-
-            if (body.basic[field]) {
-                exports.downloadVideo(body.basic[field], word, type, (error, localVideoUri) => {
-                    if (error) console.log(error)
-                    if (localVideoUri) {
-                        $(`.${type} .speaker`)
-                            .attr("src", "assert/speaker.png")
-                            .data('localUri', localVideoUri)
-                        console.log(localVideoUri)
-                    }
-                })
-
-                $(`.${type}`).show()
-            } else {
-                $(`.${type}`).hide()
+            try {
+                if (body.errorCode) {
+                    $(".message").text("查询错误，errorCode:" + body.errorCode).show()
+                    return
+                }
+                if (!body.basic) {
+                    $(".message").text("没有这个词的解释").show()
+                    return
+                }
+            } catch (e) {
+                console.error(e)
+                console.log(body)
+                $(".message").text("网络内容格式不正确").show()
+                return
             }
+
+            // 只记录英文单词
+            if (word.match(/^[a-zA-z\s\-\.]+$/)) {
+                var queryTimes = history.recordAndSave(word)
+                $(".query-times").text(`[${queryTimes}]`).show()
+            } else {
+                $(".query-times").hide()
+            }
+
+            exports.showExplains(word, body)
+
+            $(".word-speaker-uk source").attr('src', body.basic["uk-speech"]||"")
+            $(".word-speaker-us source").attr('src', body.basic["us-speech"]||"")
+            $(".word-speaker-std source").attr('src', body.basic["speech"]||"")
+
+
+            $("img.speaker.uk").data('sound-src', body.basic["uk-speech"]||"")
+            $("img.speaker.us").data('sound-src', body.basic["us-speech"]||"")
+
+            // function downloadVideo(type, field) {
+            //     $(`.${type} .speaker`)
+            //         .attr("src", "assert/downloading.gif")
+            //         .data('localUri', null)
+
+            //     if (body.basic[field]) {
+            //         exports.downloadVideo(body.basic[field], word, type, (error, localVideoUri) => {
+            //             if (error) console.log(error)
+            //             if (localVideoUri) {
+            //                 $(`.${type} .speaker`)
+            //                     .attr("src", "assert/speaker.png")
+            //                     .data('localUri', localVideoUri)
+            //                 console.log(localVideoUri)
+            //             }
+            //         })
+
+            //         $(`.${type}`).show()
+            //     } else {
+            //         $(`.${type}`).hide()
+            //     }
+            // }
+            // setTimeout(() => downloadVideo('stand', 'speech'), 100)
+            // setTimeout(() => downloadVideo('uk', 'uk-speech'), 200)
+            // setTimeout(() => downloadVideo('us', 'us-speech'), 300)
         }
-        setTimeout(() => downloadVideo('stand', 'speech'), 100)
-        setTimeout(() => downloadVideo('uk', 'uk-speech'), 200)
-        setTimeout(() => downloadVideo('us', 'us-speech'), 300)
     })
 }
 
@@ -112,7 +122,7 @@ exports.showExplains = function showExplains(word, detail) {
     }
 }
 
-exports.downloadVideo = function downloadVideo(url, word, type, cb) {
+exports.downloadVideo = function downloadVideo(url, word, type, cb) {return
     word = word.toLowerCase()
 
     var videoFolder = videoFolderRoot + "/" + word[0]

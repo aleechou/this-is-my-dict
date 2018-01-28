@@ -27,11 +27,11 @@
                 <h3 class="word no-drag flex-expand"> .. </h3>
                 <div class="phonetic-lang uk">
                     英 [ <span class="phonetic no-drag">-</span> ]
-                    <img class="speaker no-drag" src="assert/speaker.png">
+                    <img class="speaker uk no-drag" src="assert/speaker.png">
                 </div>
                 <div class="phonetic-lang us">
                     美 [ <span class="phonetic no-drag">-</span> ]
-                    <img class="speaker no-drag" src="assert/speaker.png">
+                    <img class="speaker us no-drag" src="assert/speaker.png">
                 </div>
             </di>
         </div>
@@ -40,12 +40,14 @@
         </ul>
     </div>
 
-    <video class="word-speaker" style="display: none"></video>
+    <video class="word-speaker-us" style="display: none"><source src="" type='audio/mpeg' /></video>
+    <video class="word-speaker-uk" style="display: none"><source src="" type='audio/mpeg' /></video>
+    <video class="word-speaker-std" sstyle="display: none"><source src="http://fanyi.youdao.com/openapi.do?type=data&voice=true&version=1.2&key=969918857&keyfrom=neverland&q=hello&vt=1" type='audio/mpeg' /></video>
 
-    <script src="lib/jquery.js "></script>
-    <script src="lib/amazeui/js/amazeui.js "></script>
-    <script src="lib/attr2css.js "></script>
-    <script src="quick.js "></script>
+    <script src="lib/jquery.js"></script>
+    <script src="lib/attr2css.js"></script>
+    <script src="dist/build.js"></script>
+    
 
 </body>
 

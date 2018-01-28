@@ -1,23 +1,24 @@
-const windowPos = require("./window-pos")
-const objProxy = require("./misc/ObjectIpcProxy")
-const $ = require("./lib/jquery")
-const queryWord = require("./query-word")
-const speaker = require("./speaker")
+
+
+const windowPos = require("./window-pos.js")
+// const objProxy = require("./misc/ObjectIpcProxy")
+const queryWord = require("./query-word.js")
+const speaker = require("./speaker.js")
 
 var $input = $(".word-input")
 
 // 全局快捷键
-let shortcut = objProxy.fromMainProcess("shortcut")
-let clipboard = objProxy.fromMainProcess("clipboard")
-let self = objProxy.fromMainProcess("quick-window")
+// let shortcut = objProxy.fromMainProcess("shortcut")
+// let clipboard = objProxy.fromMainProcess("clipboard")
+// let self = objProxy.fromMainProcess("quick-window")
 
 
 function registGlobalShutcut(keys, cb, cbSuc) {
-    shortcut.on(keys, function() {
-        cb && cb(keys)
-    }, (suc) => {
-        cbSuc && cbSuc(suc)
-    })
+    // shortcut.on(keys, function() {
+    //     cb && cb(keys)
+    // }, (suc) => {
+    //     cbSuc && cbSuc(suc)
+    // })
 }
 
 // 显示窗口

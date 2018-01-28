@@ -1,42 +1,19 @@
-const { app, BrowserWindow, ipcMain, globalShortcut, clipboard } = require('electron')
-const path = require('path')
-const url = require('url')
-const objProxy = require("./src/misc/ObjectIpcProxy.js")
-
-let quick
-
-// console.log(__dirname)
-
-function createWindow() {
-    quick = new BrowserWindow({ width: 400, height: 250, frame: false })
-
-    objProxy.exportAsRemoteObject("quick-window", quick)
-    objProxy.exportAsRemoteObject("shortcut", globalShortcut)
-    objProxy.exportAsRemoteObject("clipboard", clipboard)
-
-    globalShortcut.on = globalShortcut.register
-    globalShortcut.on = function(n, e) {
-        return this.register(n, e)
-    }
-
-    quick.loadURL("file://" + __dirname + '/src/quick.html')
-    quick.webContents.openDevTools()
-    quick.on('closed', () => {
-        quick = null
-    })
-}
+const qnode = require("qnode")
 
 
-app.on('ready', createWindow)
+var mainWindow = new qnode.Window();
+(async() => {
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
+    await mainWindow.aload("file://"+__dirname + "/src/quick.html")
+    
+})()
+mainWindow.show()
+
+// 播放声音
+var soundPlayer = new qnode.QtObjectWrapper("MediaPlayer*")
+mainWindow.on("play-sound", (url)=>{
+    soundPlayer.setMedia(url)
+    soundPlayer.play()
 })
 
-app.on('activate', () => {
-    if (quick === null) {
-        createWindow()
-    }
-})
+qnode.openDevConsole()

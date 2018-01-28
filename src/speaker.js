@@ -1,6 +1,3 @@
-const $ = require("./lib/jquery")
-
-
 
 // var soundQueue = []
 
@@ -81,11 +78,13 @@ exports.speakUri = function(uri, cb) {
 }
 
 console.log($speaker[0])
-$speaker[0].onended = function() {
-    if (speakCallback) {
-        ((speakCallback) =>
-            setTimeout(() => speakCallback(null, false), 0)
-        )(speakCallback)
-        speakCallback = null;
+if($speaker.length) {
+    $speaker[0].onended = function() {
+        if (speakCallback) {
+            ((speakCallback) =>
+                setTimeout(() => speakCallback(null, false), 0)
+            )(speakCallback)
+            speakCallback = null;
+        }
     }
 }

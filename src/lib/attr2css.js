@@ -4,9 +4,6 @@ var css_list = [
 ]
 var css_alias = {}
 
-
-$ = require("./lib/jquery")
-
 oriDocumentCreateElement = document.createElement
 document.createElement = function() {
     return oriDocumentCreateElement.apply(this, arguments)

@@ -1,7 +1,9 @@
-let data = require("./savedata")
-const { screen, ipcRenderer } = require("electron")
-const idle = require("./misc/idle")
-let self = require("./misc/ObjectIpcProxy").fromMainProcess("quick-window")
+// let data = require("./savedata")
+// const { screen, ipcRenderer } = require("electron")
+// const idle = require("./misc/idle")
+// let self = require("./misc/ObjectIpcProxy").fromMainProcess("quick-window")
+
+
 
 exports.init = function() {
     // 窗口置顶
