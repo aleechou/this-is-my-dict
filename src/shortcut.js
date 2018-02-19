@@ -1,7 +1,5 @@
-
-
 const windowPos = require("./window-pos.js")
-// const objProxy = require("./misc/ObjectIpcProxy")
+    // const objProxy = require("./misc/ObjectIpcProxy")
 const queryWord = require("./query-word.js")
 const speaker = require("./speaker.js")
 
@@ -22,17 +20,25 @@ function registGlobalShutcut(keys, cb, cbSuc) {
 }
 
 // 显示窗口
-registGlobalShutcut('Shift+Space', () => {
+qt.onLoaded(async() => {
 
-    self.show()
-    $input.focus()
+    shiftspace = await qt.createObject("QHotkey")
+    shiftspace.setShortcut("alt+space")
+    shiftspace.setRegistered(true)
 
-    // 全选
-    $input[0].selectionStart = 0
-    $input[0].selectionEnd = $input.val().length
+    shiftspace.on('activated', async function() {
 
-    // 自动从剪切板中取英文单词
-    clipboard.readText((text) => {
+        console.log("...")
+
+        $window.setVisible(true)
+        $input.focus()
+
+        // 全选
+        $input[0].selectionStart = 0
+        $input[0].selectionEnd = $input.val().length
+
+        // 自动从剪切板中取英文单词
+        var text = await qt.clipboard.text()
         if (!text) return
         if (!text.match(/^[a-zA-Z ]+$/)) return
         $input
@@ -43,6 +49,7 @@ registGlobalShutcut('Shift+Space', () => {
         // 全选
         $input[0].selectionStart = 0
         $input[0].selectionEnd = $input.val().length
+
     })
 })
 
@@ -97,6 +104,6 @@ $(document).keydown(function(event) {
         speaker.abord()
         // 关闭 quick 窗口
     else
-        self.hide()
+        $window.setVisible(false)
 
 })
